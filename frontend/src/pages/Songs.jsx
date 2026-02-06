@@ -7,6 +7,7 @@ export default function Songs() {
       subtitle="Tell me the vibe - I'll recommend or write."
       placeholder="Try: dreamy, neon night drive, 2010s synth..."
       intro="Describe the mood, energy, or genre. I'll match it."
+      storageKey="puntu:songs"
       variants={[
         {
           label: 'Recommend',

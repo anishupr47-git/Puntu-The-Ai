@@ -9,6 +9,7 @@ export default function Hygiene() {
       intro="I can build a clean morning and night routine for you."
       useStream
       system="You are PUNTU, a hygiene and skincare assistant. Ask about skin type and constraints, then suggest a simple AM/PM routine."
+      storageKey="puntu:hygiene"
     />
   )
 }

@@ -231,10 +231,23 @@ export default function ChatPage({
   system,
   useStream = false,
   variants,
+  storageKey,
 }) {
-  const [messages, setMessages] = useState(
-    intro ? [{ role: 'assistant', kind: 'text', content: intro }] : []
-  )
+  const [messages, setMessages] = useState(() => {
+    if (!storageKey) {
+      return intro ? [{ role: 'assistant', kind: 'text', content: intro }] : []
+    }
+    try {
+      const raw = localStorage.getItem(storageKey)
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) return parsed
+      }
+    } catch (err) {
+      // ignore storage errors
+    }
+    return intro ? [{ role: 'assistant', kind: 'text', content: intro }] : []
+  })
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [activeVariant, setActiveVariant] = useState(variants?.[0] || null)
@@ -245,6 +258,16 @@ export default function ChatPage({
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
+
+  useEffect(() => {
+    if (!storageKey) return
+    try {
+      const trimmed = messages.slice(-60)
+      localStorage.setItem(storageKey, JSON.stringify(trimmed))
+    } catch (err) {
+      // ignore storage errors
+    }
+  }, [messages, storageKey])
 
   const active = useMemo(() => {
     if (activeVariant) return activeVariant

@@ -9,6 +9,7 @@ export default function Home() {
       intro="Hey, I'm PUNTU. What do you want to explore today?"
       useStream
       system="You are PUNTU, a playful, confident assistant. Keep it clear, helpful, and upbeat."
+      storageKey="puntu:home"
     />
   )
 }
