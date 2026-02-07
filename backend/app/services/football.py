@@ -68,8 +68,12 @@ def _poisson(k: int, lam: float) -> float:
 
 
 def available_teams(db: Session) -> list[str]:
-    matches = _load_matches(db)
     teams = set()
+    club_rows = db.query(Club.team).all()
+    national_rows = db.query(NationalTeam.team).all()
+    teams.update({row[0] for row in club_rows})
+    teams.update({row[0] for row in national_rows})
+    matches = _load_matches(db)
     for m in matches:
         teams.add(m['home_team'])
         teams.add(m['away_team'])

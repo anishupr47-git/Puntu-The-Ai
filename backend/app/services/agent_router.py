@@ -204,9 +204,14 @@ async def handle_skill(
             raise ValueError('Database session required for football predictions.')
         text = message.lower()
         teams = available_teams(db)
-        found = [team for team in teams if team.lower() in text]
+        found = []
+        for team in teams:
+            idx = text.find(team.lower())
+            if idx != -1:
+                found.append((idx, team))
         if len(found) >= 2:
-            return predict_match(db, found[0], found[1])
+            found.sort(key=lambda item: item[0])
+            return predict_match(db, found[0][1], found[1][1])
         return {
             'guardrail': 'Please provide a home and away team.',
             'available_teams': teams
